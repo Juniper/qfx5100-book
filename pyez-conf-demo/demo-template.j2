@@ -1,0 +1,54 @@
+vlans {
+    {% for vlan in vlans %}
+    {{ vlan }} {
+        description "{{ vlans[vlan]['desc'] }}";
+        vlan-id {{ vlans[vlan]['vlan_id'] }};
+    }
+    {% endfor %}
+}
+
+interfaces {
+    {% for vlan in vlans %}
+    {% for interface in vlans[vlan]['interfaces'] %}
+    {{ interface['name'] }} {
+        description "access interface";
+        unit 0 {
+           description "belongs to {{ vlan|upper }} VLAN";
+            family ethernet-switching {
+                interface-mode access;
+                vlan {
+                    members {{ vlan }};
+                }
+            }
+        }
+    }
+    {% endfor %}
+    {% endfor %}
+    {% for uplink in uplinks %}
+    {% for interface in uplinks[uplink]['interfaces'] %}
+    {{ interface['name'] }} {
+        ether-options {
+            802.3ad {{ uplink }};
+        }
+    }
+    {% endfor %}
+    {{ uplink }} {
+        aggregated-ether-options {
+            minimum-links {{ uplinks[uplink]['min_links'] }};
+            lacp {
+                {{ uplinks[uplink]['lacp_mode'] }};
+            }
+        }                          
+        unit 0 {
+            description "Uplink interface";
+            family ethernet-switching {
+                interface-mode trunk;
+                vlan {
+                    members [ blue green red ];
+                }
+            }
+        }
+    }
+    {% endfor %}
+}
+

@@ -1,0 +1,24 @@
+---
+vlans:
+  blue:
+    vlan_id: 100
+    desc: "the BLUE vlan"
+    interfaces:
+      - name: ge-0/0/14
+  green:
+    vlan_id: 200
+    desc: "the GREEN vlan"
+    interfaces:
+      - name: ge-0/0/15
+  red:
+    vlan_id: 300
+    desc: "the RED vlan"
+    interfaces:
+      - name: ge-0/0/16
+uplinks:
+  ae0:
+    interfaces:
+      - name: xe-0/0/10
+      - name: xe-0/0/11
+    min_links: 1
+    lacp_mode: active

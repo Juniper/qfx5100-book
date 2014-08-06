@@ -1,0 +1,10 @@
+{
+  "name": "qfx5100",
+  "chef_environment": "_default",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "run_list": ["recipe[netdev::vlan_create]","recipe[netdev::access_interface_create]","recipe[netdev::uplink_interface_create]"]
+}
